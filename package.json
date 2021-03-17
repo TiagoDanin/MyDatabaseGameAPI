@@ -1,0 +1,37 @@
+{
+	"name": "Backend",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"start": "env-cmd node index.js",
+		"dev": "env-cmd nodemon rs",
+		"lint": "xo"
+	},
+	"dependencies": {
+		"@admin-bro/express": "^3.1.0",
+		"body-parser": "^1.19.0",
+		"express": "^4.17.1",
+		"jsonfile": "^6.0.1",
+		"qs": "^6.9.4",
+		"uuid": "^8.2.0"
+	},
+	"devDependencies": {
+		"env-cmd": "10.1.0",
+		"nodemon": "2.0.4",
+		"xo": "0.32.1"
+	},
+	"xo": {
+		"rules": {
+			"quote-props": "warn",
+			"eqeqeq": "off",
+			"array-callback-return": "warn",
+			"require-atomic-updates": "warn",
+			"no-else-return": "warn",
+			"camelcase": "off",
+			"no-unused-vars": "warn",
+			"no-return-await": "warn"
+		},
+		"semicolon": false
+	}
+}
