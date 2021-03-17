@@ -57,6 +57,28 @@ app.get(`/api/v${build}/games/`, (request, response) => {
 	}).catch(error => errorHandler(response, error))
 })
 
+app.get(`/api/v${build}/games/soon`, (request, response) => {
+	console.log('[+] List all games (release)')
+
+	database.getAllGamesSoon().then(result => {
+		response.json({
+			isOk: true,
+			data: result
+		})
+	}).catch(error => errorHandler(response, error))
+})
+
+app.get(`/api/v${build}/users/`, (request, response) => {
+	console.log('[+] List all users')
+
+	database.getAllUsers().then(result => {
+		response.json({
+			isOk: true,
+			data: result
+		})
+	}).catch(error => errorHandler(response, error))
+})
+
 app.use('/api/', (request, response, next) => {
 	const error = new Error(`Not found: ${request.originalUrl}`)
 	next(error)

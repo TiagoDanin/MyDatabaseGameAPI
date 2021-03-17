@@ -1,0 +1,135 @@
+{
+	"info": {
+		"_postman_id": "cfe2f5df-ee8c-49ef-aa51-4f0afa63fd4e",
+		"name": "MyDatabaseGameApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all games",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8087/api/:version/:action/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"api",
+						":version",
+						":action",
+						""
+					],
+					"variable": [
+						{
+							"key": "version",
+							"value": "v{{version}}"
+						},
+						{
+							"key": "action",
+							"value": "games"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8087/api/:version/:action/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"api",
+						":version",
+						":action",
+						""
+					],
+					"variable": [
+						{
+							"key": "version",
+							"value": "v{{version}}"
+						},
+						{
+							"key": "action",
+							"value": "users"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all games (Soon)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8087/api/:version/:action/:subaction",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"api",
+						":version",
+						":action",
+						":subaction"
+					],
+					"variable": [
+						{
+							"key": "version",
+							"value": "v{{version}}"
+						},
+						{
+							"key": "action",
+							"value": "games"
+						},
+						{
+							"key": "subaction",
+							"value": "soon"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "version",
+			"value": "1"
+		}
+	]
+}
