@@ -10,7 +10,7 @@ const port = process.env.PORT || 8000
 const build = 1
 
 const errorHandler = (response, error) => {
-	console.error("[!] Error", error)
+	console.error('[!] Error', error)
 	response.status(500).json({
 		isOk: false,
 		error: {
@@ -26,7 +26,7 @@ app.set('trust proxy', 1)
 
 app.use('/api/', bodyParser.json())
 
-let countRequests = 0 
+let countRequests = 0
 app.use('/api/', (request, response, next) => {
 	console.log(`[.] New API Request (${++countRequests}): ${Date.now().toString()}`)
 	next()
@@ -41,7 +41,7 @@ app.get(`/api/v${build}/version/`, (request, response) => {
 
 	response.json({
 		isOk: true,
-		apiVersion: "0.0.1",
+		apiVersion: '0.0.1',
 		apiBuild: 1
 	})
 })
@@ -87,8 +87,8 @@ app.use('/api/', (request, response, next) => {
 app.use('/api/', (error, request, response, next) => {
 	let statusCode = request.statusCode === 200 ? 500 : (request.statusCode || 500)
 	console.error('[!] Error API', error.stack)
-	
-	if (error.message.includes("Not found")) {
+
+	if (error.message.includes('Not found')) {
 		statusCode = 404
 	}
 

@@ -1,11 +1,11 @@
 const {v4: uuidv4} = require('uuid')
-const mysql = require("mysql2/promise")
+const mysql = require('mysql2/promise')
 
 let connection
 
 const connect = async () => {
-	connection = await mysql.createConnection("mysql://root:password@localhost:3306/gamedb")
-	console.log("[!] Database is ready!")
+	connection = await mysql.createConnection(`mysql://${process.env.MYSQLHOST}/gamedb`)
+	console.log('[!] Database is ready!')
 }
 
 const getAllGames = async () => {
