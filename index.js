@@ -46,15 +46,35 @@ app.get(`/api/v${build}/version/`, (request, response) => {
 	})
 })
 
-app.get(`/api/v${build}/games/`, (request, response) => {
-	console.log('[+] List all games')
+app.get(`/api/v${build}/genders/`, (request, response) => {
+	console.log('[+] List all genders')
 
-	database.getAllGames().then(result => {
+	database.getAllGenders().then(result => {
 		response.json({
 			isOk: true,
 			data: result
 		})
 	}).catch(error => errorHandler(response, error))
+})
+
+app.get(`/api/v${build}/games/`, (request, response) => {
+	console.log('[+] List all games', request.query)
+
+	if (request.query.gender) {
+		database.getAllGamesByGender(request.query.gender).then(result => {
+			response.json({
+				isOk: true,
+				data: result
+			})
+		}).catch(error => errorHandler(response, error))
+	} else {
+		database.getAllGames().then(result => {
+			response.json({
+				isOk: true,
+				data: result
+			})
+		}).catch(error => errorHandler(response, error))
+	}
 })
 
 app.get(`/api/v${build}/games/soon`, (request, response) => {

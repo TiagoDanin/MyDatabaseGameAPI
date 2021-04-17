@@ -13,6 +13,20 @@ const getAllGames = async () => {
 	return rows
 }
 
+const getAllGamesByGender = async (genderId) => {
+	const [rows] = await connection.query(`
+		SELECT game.*
+			FROM gamedb.game, gamedb.game_genero
+			WHERE game.id = game_genero.game_id AND game_genero.genero_id = ?;
+	`, [genderId])
+	return rows
+}
+
+const getAllGenders = async () => {
+	const [rows] = await connection.query('SELECT * FROM genero;')
+	return rows
+}
+
 const getAllUsers = async () => {
 	const [rows] = await connection.query('SELECT  *FROM usuario;')
 	return rows
@@ -33,5 +47,7 @@ module.exports = {
 	connect,
 	getAllGames,
 	getAllUsers,
-	getAllGamesSoon
+	getAllGamesSoon,
+	getAllGenders,
+	getAllGamesByGender
 }
