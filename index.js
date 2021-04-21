@@ -46,52 +46,12 @@ app.get(`/api/v${build}/version/`, (request, response) => {
 	})
 })
 
-app.get(`/api/v${build}/genders/`, (request, response) => {
-	console.log('[+] List all genders')
+app.get(`/api/v${build}/:action/`, (request, response) => {
+	const {query} = request
+	const {action} = request.params
+	console.log(`[+] API ${action}:`, query)
 
-	database.getAllGenders().then(result => {
-		response.json({
-			isOk: true,
-			data: result
-		})
-	}).catch(error => errorHandler(response, error))
-})
-
-app.get(`/api/v${build}/games/`, (request, response) => {
-	console.log('[+] List all games', request.query)
-
-	if (request.query.gender) {
-		database.getAllGamesByGender(request.query.gender).then(result => {
-			response.json({
-				isOk: true,
-				data: result
-			})
-		}).catch(error => errorHandler(response, error))
-	} else {
-		database.getAllGames().then(result => {
-			response.json({
-				isOk: true,
-				data: result
-			})
-		}).catch(error => errorHandler(response, error))
-	}
-})
-
-app.get(`/api/v${build}/games/soon`, (request, response) => {
-	console.log('[+] List all games (release)')
-
-	database.getAllGamesSoon().then(result => {
-		response.json({
-			isOk: true,
-			data: result
-		})
-	}).catch(error => errorHandler(response, error))
-})
-
-app.get(`/api/v${build}/users/`, (request, response) => {
-	console.log('[+] List all users')
-
-	database.getAllUsers().then(result => {
+	database[action](query).then(result => {
 		response.json({
 			isOk: true,
 			data: result
