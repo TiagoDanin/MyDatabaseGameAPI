@@ -135,7 +135,21 @@ const isLoginValid = async (paramaters) => {
 		WHERE nome_de_usuario = ? AND password = ?;
 	`, [paramaters.username, paramaters.password])
 
-	return rows.length == 1
+	return rows
+}
+
+const createLogin = async (paramaters) => {
+	const [rows] = await connection.query(`
+	INSERT INTO gamedb.usuario (nome_de_usuario, password, nome, email)
+		VALUES (?, ?, ?, ?);
+	`, [
+		paramaters.username,
+		paramaters.password,
+		paramaters.name ? paramaters.name : null,
+		paramaters.email
+	])
+
+	return rows
 }
 
 module.exports = {
@@ -151,5 +165,6 @@ module.exports = {
 	getUserComments,
 	getGameComments,
 	getSearchGames,
-	isLoginValid
+	isLoginValid,
+	createLogin
 }
