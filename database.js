@@ -6,6 +6,9 @@ let connection
 const connect = async () => {
 	connection = await mysql.createConnection(`mysql://${process.env.MYSQLHOST}/gamedb`)
 	console.log('[!] Database is ready!')
+	connection.query(`
+		USE gamedb;
+	`)
 }
 
 const getAllGames = async () => {
@@ -152,6 +155,59 @@ const createLogin = async (paramaters) => {
 	return rows
 }
 
+const getOsGame = async (paramaters) => {
+	const [rows] = await connection.query(`
+	SELECT sistema_operacional.nome
+		FROM gamedb.game, gamedb.game_sistema_operacional, gamedb.sistema_operacional
+		WHERE game.id = ? AND
+			game.id = game_sistema_operacional.game_id AND
+			game_sistema_operacional.sistema_operacional_id = sistema_operacional.id;
+	`, [paramaters.gameId])
+
+	return rows
+}
+
+const getGendersGame = async (paramaters) => {
+	const [rows] = await connection.query(`
+	SELECT genero.nome
+		FROM gamedb.game, gamedb.game_genero, gamedb.genero
+		WHERE game.id = ? AND
+			game.id = game_genero.game_id AND
+			game_genero.genero_id = genero.id;
+	`, [paramaters.gameId])
+
+	return rows
+}
+
+const getDistributorGame = async (paramaters) => {
+	const [rows] = await connection.query(`
+	SELECT empresa.nome
+		FROM gamedb.empresa, gamedb.distribuidora, gamedb.game
+		WHERE game.id = ? AND
+			game.id = distribuidora.game_id AND
+			distribuidora.empresa_id = empresa.id;
+	`, [paramaters.gameId])
+
+	return rows
+}
+
+const getDeveloperGame = async (paramaters) => {
+	const [rows] = await connection.query(`
+	SELECT empresa.nome
+		FROM gamedb.empresa, gamedb.desenvolvedor, gamedb.game
+		WHERE game.id = ? AND
+			game.id = desenvolvedor.game_id AND
+			desenvolvedor.empresa_id = empresa.id;
+	`, [paramaters.gameId])
+
+	return rows
+}
+
+const getRateGame = async (paramaters) => {
+	const [rows] = await connection.query(`SELECT fnObterNota(?) as nota;`, [paramaters.gameId])
+	return rows[0]
+}
+
 module.exports = {
 	connect,
 	getAllGames,
@@ -166,5 +222,10 @@ module.exports = {
 	getGameComments,
 	getSearchGames,
 	isLoginValid,
-	createLogin
+	createLogin,
+	getOsGame,
+	getGendersGame,
+	getDistributorGame,
+	getDeveloperGame,
+	getRateGame
 }
