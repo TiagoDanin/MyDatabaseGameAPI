@@ -105,21 +105,6 @@ const getUserComments = async () => {
 	return rows
 }
 
-const getGameComments = async (paramaters) => {
-	const [rows] = await connection.query(`
-	SELECT
-		comentario.id,
-		comentario.texto,
-		usuario.nome_de_usuario AS nome
-		FROM gamedb.comentario, gamedb.usuario
-		WHERE
-			comentario.game_id = ? AND
-			usuario.id = comentario.usuario_id;
-	`, [paramaters.gameId])
-	return rows
-}
-
-
 const getSearchGames = async (paramaters) => {
 	const text = `%${paramaters.text}%`
 	const [rows] = await connection.query(`
@@ -208,6 +193,30 @@ const getRateGame = async (paramaters) => {
 	return rows[0]
 }
 
+const createComment = async (paramaters) => {
+	const [rows] = await connection.query(`
+	INSERT INTO gamedb.comentario (game_id, usuario_id, texto)
+		VALUES (?, ?, ?);
+	`, [paramaters.gameId, paramaters.userId, paramaters.text])
+
+	return rows
+}
+
+const listCommentsGame = async (paramaters) => {
+	const [rows] = await connection.query(`
+	SELECT
+		comentario.id,
+		comentario.texto,
+		usuario.nome_de_usuario AS nome
+		FROM gamedb.comentario, gamedb.usuario
+		WHERE
+			comentario.game_id = ? AND
+			usuario.id = comentario.usuario_id;
+	`, [paramaters.gameId])
+
+	return rows
+}
+
 module.exports = {
 	connect,
 	getAllGames,
@@ -219,7 +228,6 @@ module.exports = {
 	getAllUsersTops,
 	getAllGamesTopComments,
 	getUserComments,
-	getGameComments,
 	getSearchGames,
 	isLoginValid,
 	createLogin,
@@ -227,5 +235,7 @@ module.exports = {
 	getGendersGame,
 	getDistributorGame,
 	getDeveloperGame,
-	getRateGame
+	getRateGame,
+	createComment,
+	listCommentsGame
 }

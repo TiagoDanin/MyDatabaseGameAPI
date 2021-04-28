@@ -59,6 +59,20 @@ app.get(`/api/v${build}/:action/`, (request, response) => {
 	}).catch(error => errorHandler(response, error))
 })
 
+
+app.post(`/api/v${build}/:action/`, (request, response) => {
+	const query = request.body
+	const {action} = request.params
+	console.log(`[+] API ${action}:`, query)
+
+	database[action](query).then(result => {
+		response.json({
+			isOk: true,
+			data: result
+		})
+	}).catch(error => errorHandler(response, error))
+})
+
 app.use('/api/', (request, response, next) => {
 	const error = new Error(`Not found: ${request.originalUrl}`)
 	next(error)
