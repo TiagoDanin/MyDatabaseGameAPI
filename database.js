@@ -217,6 +217,33 @@ const listCommentsGame = async (paramaters) => {
 	return rows
 }
 
+const getDistributorGames = async (paramaters) => {
+	const [rows] = await connection.query(`
+	SELECT game.*
+		FROM gamedb.distribuidora, gamedb.game
+		WHERE game.id = distribuidora.game_id AND
+			distribuidora.empresa_id = 1;
+	`, [paramaters.id])
+
+	return rows
+}
+
+const getDeveloperGames = async (paramaters) => {
+	const [rows] = await connection.query(`
+	SELECT game.*
+		FROM gamedb.desenvolvedor, gamedb.game
+		WHERE game.id = desenvolvedor.game_id AND
+			desenvolvedor.empresa_id = 1;
+	`, [paramaters.id])
+
+	return rows
+}
+
+const getBusinesses = async () => {
+	const [rows] = await connection.query(`SELECT * FROM gamedb.empresa;`)
+	return rows
+}
+
 module.exports = {
 	connect,
 	getAllGames,
@@ -237,5 +264,8 @@ module.exports = {
 	getDeveloperGame,
 	getRateGame,
 	createComment,
-	listCommentsGame
+	listCommentsGame,
+	getDistributorGames,
+	getDeveloperGames,
+	getBusinesses
 }
