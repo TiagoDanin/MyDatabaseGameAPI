@@ -29,11 +29,6 @@ const getAllGamesByGender = async (paramaters) => {
 	return rows
 }
 
-const getAllGenders = async () => {
-	const [rows] = await connection.query('SELECT * FROM genero;')
-	return rows
-}
-
 const getAllUsers = async () => {
 	const [rows] = await connection.query('SELECT * FROM usuario;')
 	return rows
@@ -244,7 +239,91 @@ const getBusinesses = async () => {
 	return rows
 }
 
+const getAllGenders = async () => {
+	const [rows] = await connection.query('SELECT * FROM gamedb.genero;')
+	return rows
+}
+
+const getAllOs = async () => {
+	const [rows] = await connection.query('SELECT * FROM gamedb.sistema_operacional;')
+	return rows
+}
+
+const createBusiness = async (paramaters) => {
+	const [rows] = await connection.query(`
+		INSERT INTO gamedb.empresa (nome) VALUES (?);
+	`, [paramaters.text])
+
+	return rows
+}
+
+const createGender = async (paramaters) => {
+	const [rows] = await connection.query(`
+		INSERT INTO gamedb.genero (nome) VALUES (?);
+	`, [paramaters.text])
+
+	return rows
+}
+
+const createGame = async (paramaters) => {
+	let gameId = 0;
+	const {
+		userId,
+		name,
+		description,
+		releaseDate,
+		steamId,
+		genders,
+		developers,
+		distributions,
+		os
+	} = paramaters
+
+	const [rows] = await connection.query(`
+		INSERT INTO gamedb.game (nome, descricao, lacamento_data, steam_id)
+			VALUES (?, ?, ?, ?);
+	`, [name, description, releaseDate, steamId ? steamId : null])
+	gameId = rows.insertId
+
+	for (id of genders.split(',')) {
+		await connection.query(`
+			INSERT INTO gamedb.game_genero (game_id, genero_id) VALUES (?, ?);
+		`, [gameId, id])
+	}
+
+	for (id of developers.split(',')) {
+		await connection.query(`
+			INSERT INTO gamedb.desenvolvedor (game_id, empresa_id) VALUES (?, ?);
+		`, [gameId, id])
+	}
+
+	for (id of developers.split(',')) {
+		await connection.query(`
+			INSERT INTO gamedb.desenvolvedor (game_id, empresa_id) VALUES (?, ?);
+		`, [gameId, id])
+	}
+
+	for (id of distributions.split(',')) {
+		await connection.query(`
+			INSERT INTO gamedb.distribuidora (game_id, empresa_id) VALUES (?, ?);
+		`, [gameId, id])
+	}
+
+	for (id of os.split(',')) {
+		await connection.query(`
+			INSERT INTO gamedb.game_sistema_operacional (game_id, sistema_operacional_id) VALUES (?, ?);
+		`, [gameId, id])
+	}
+
+	await connection.query(`
+		INSERT INTO gamedb.game_editado_por (usuario_id, game_id) VALUES (?, ?);
+	`, [userId, gameId])
+
+	return rows
+}
+
 module.exports = {
+	createGame,
 	connect,
 	getAllGames,
 	getAllUsers,
@@ -264,8 +343,11 @@ module.exports = {
 	getDeveloperGame,
 	getRateGame,
 	createComment,
+	createGender,
 	listCommentsGame,
 	getDistributorGames,
 	getDeveloperGames,
-	getBusinesses
+	getBusinesses,
+	createBusiness,
+	getAllOs
 }
