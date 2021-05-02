@@ -322,6 +322,36 @@ const createGame = async (paramaters) => {
 	return rows
 }
 
+const sendRateGame = async (paramaters) => {
+	const {
+		gameId,
+		userId,
+		rate
+	} = paramaters
+
+	const [rows] = await connection.query(`
+	SELECT nota FROM gamedb.nota
+		WHERE usuario_id = ?
+		AND game_id = ?;
+	`, [userId, gameId])
+
+	if (rows.length <= 0) {
+		await connection.query(`
+		INSERT INTO gamedb.nota (game_id, usuario_id, nota)
+			VALUES (?, ?, ?);
+		`, [gameId, userId, rate])
+	} else {
+		await connection.query(`
+		UPDATE gamedb.nota
+			SET nota = ?
+			WHERE usuario_id = ?
+			AND game_id = ?;
+		`, [rate, userId, gameId])
+	}
+
+	return getRateGame(paramaters)
+}
+
 module.exports = {
 	createGame,
 	connect,
@@ -349,5 +379,6 @@ module.exports = {
 	getDeveloperGames,
 	getBusinesses,
 	createBusiness,
-	getAllOs
+	getAllOs,
+	sendRateGame
 }
