@@ -13,7 +13,7 @@
 		"express": "^4.17.1",
 		"mysql2": "^2.2.5",
 		"qs": "^6.9.4",
-		"uuid": "^8.2.0"
+		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
 		"env-cmd": "10.1.0",
